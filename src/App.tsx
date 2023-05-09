@@ -98,6 +98,11 @@ function App() {
     <div className='App'>
       <header className='App-header'>
         <h1>markdown-badges generator</h1>
+        <h3>
+          <a href='https://github.com/sharynneazhar/markdown-badges-generator'>
+            GitHub
+          </a>
+        </h3>
       </header>
       <main>
         <Accordion defaultActiveKey='0'>
@@ -162,6 +167,15 @@ function App() {
         Made with ❤️ by{' '}
         <a href='https://github.com/sharynneazhar' className='link-light'>
           Sharynne Azhar
+        </a>
+        .
+        <br />
+        Inspired by{' '}
+        <a
+          href='https://github.com/Ileriayo/markdown-badges/tree/master'
+          className='link-light'
+        >
+          ileriayo/markdown-badges
         </a>
       </footer>
     </div>

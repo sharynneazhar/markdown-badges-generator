@@ -19,6 +19,14 @@
 
 header {
   grid-area: hd;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header a {
+  color: #fff;
+  text-decoration: none;
 }
 
 main {
