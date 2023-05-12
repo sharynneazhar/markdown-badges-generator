@@ -6,6 +6,15 @@ import './App.css';
 function App() {
   const [list, setList]: any = useState([]);
   const [badges, setBadges]: any = useState({});
+  const [badgeStyle, setBadgeStyle]: any = useState('plastic');
+
+  const badgeStyles = [
+    {label: 'Plastic', value: 'plastic'},
+    {label: 'Flat', value: 'flat'},
+    {label: 'Flat Square', value: 'flat-square'},
+    {label: 'For the Badge', value: 'for-the-badge'},
+    {label: 'Social', value: 'Social'},
+  ];
 
   const convertMarkdownToObjects = (markdown: any) => {
     const lines = markdown.split('\n');
@@ -29,7 +38,8 @@ function App() {
         const columns = line.split('|').map((col: any) => col.trim());
         if (columns && columns.length >= 4) {
           const name = columns[1];
-          const link = columns[2].match(/\((.*?)\)/)?.[1];
+          let link = columns[2].match(/\((.*?)\)/)?.[1];
+          link = link.replace(/style=([^&]*)/, `style=${badgeStyle}`);
           currentBadges.push({name, link});
         }
       }
@@ -63,7 +73,7 @@ function App() {
         const badgesList = convertMarkdownToObjects(badgesContent);
         setList(badgesList);
       });
-  }, []);
+  }, [convertMarkdownToObjects]);
 
   useEffect(() => {
     fetchMarkdown();
@@ -94,6 +104,15 @@ function App() {
     return markdownContent;
   };
 
+  const handleStyles = (_event: any, style: string) => {
+    const newBadges = Object.keys(badges).reduce((obj: any, key) => {
+      obj[key] = badges[key].replace(/style=([^&]*)/, `style=${style}`);
+      return obj;
+    }, {});
+    setBadges(newBadges);
+    setBadgeStyle(style);
+  };
+
   return (
     <div className='App'>
       <header className='App-header'>
@@ -117,10 +136,8 @@ function App() {
                         key={index}
                         type='checkbox'
                         label={badge.name}
-                        checked={badges[badge.name]}
-                        onChange={(e) => {
-                          handleCheckboxes(e, badge);
-                        }}
+                        checked={badges[badge.name] || false}
+                        onChange={(e) => handleCheckboxes(e, badge)}
                       />
                     );
                   })}
@@ -131,6 +148,20 @@ function App() {
         </Accordion>
       </main>
       <section>
+        <div className='styles'>
+          <h3>Choose a Style</h3>
+          <div className='input-group'>
+            {badgeStyles.map((style, index) => (
+              <Form.Check
+                key={index}
+                type='radio'
+                label={style.label}
+                checked={badgeStyle === style.value}
+                onChange={(e) => handleStyles(e, style.value)}
+              />
+            ))}
+          </div>
+        </div>
         <div className='preview'>
           <h3>
             <span>Preview</span>
@@ -141,10 +172,7 @@ function App() {
           <div className='badges'>
             {Object.keys(badges).map((badgeName) => (
               <span key={badgeName}>
-                <img
-                  src={`${badges[badgeName]}&style=flat-square`}
-                  alt={badgeName}
-                />
+                <img src={badges[badgeName]} alt={badgeName} />
               </span>
             ))}
           </div>

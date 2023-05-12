@@ -40,6 +40,18 @@ section {
   top: 30px;
 }
 
+section .styles {
+  margin-top: 25px;
+  margin-bottom: 60px;
+}
+
+section .styles .input-group {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  margin-top: 10px;
+}
+
 section .preview {
   margin-bottom: 60px;
 }
@@ -58,6 +70,7 @@ section .badges {
 }
 
 .markdown pre {
+  max-height: 500px;
   margin-top: 20px;
   padding: 20px;
   border-radius: 8px;
