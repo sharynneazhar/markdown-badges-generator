@@ -16,7 +16,7 @@ function App() {
     {label: 'Social', value: 'Social'},
   ];
 
-  const convertMarkdownToObjects = (markdown: any) => {
+  const convertMarkdownToObjects = useCallback((markdown: any) => {
     const lines = markdown.split('\n');
     const sections = [];
 
@@ -50,7 +50,7 @@ function App() {
     }
 
     return sections;
-  };
+  }, []);
 
   const fetchMarkdown = useCallback(() => {
     const url =
@@ -73,7 +73,7 @@ function App() {
         const badgesList = convertMarkdownToObjects(badgesContent);
         setList(badgesList);
       });
-  }, []);
+  }, [convertMarkdownToObjects]);
 
   useEffect(() => {
     fetchMarkdown();
