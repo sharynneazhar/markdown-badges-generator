@@ -16,41 +16,44 @@ function App() {
     {label: 'Social', value: 'Social'},
   ];
 
-  const convertMarkdownToObjects = useCallback((markdown: any) => {
-    const lines = markdown.split('\n');
-    const sections = [];
+  const convertMarkdownToObjects = useCallback(
+    (markdown: any) => {
+      const lines = markdown.split('\n');
+      const sections = [];
 
-    let currentSection = null;
-    let currentBadges = [];
+      let currentSection = null;
+      let currentBadges = [];
 
-    for (const line of lines) {
-      if (line.startsWith('###')) {
-        if (currentSection) {
-          sections.push({section: currentSection, badges: currentBadges});
-          currentBadges = [];
-        }
-        currentSection = line.substring(4).trim();
-      } else if (
-        line.startsWith('|') &&
-        !line.startsWith('| ---') &&
-        !line.startsWith('| Name')
-      ) {
-        const columns = line.split('|').map((col: any) => col.trim());
-        if (columns && columns.length >= 4) {
-          const name = columns[1];
-          let link = columns[2].match(/\((.*?)\)/)?.[1];
-          link = link.replace(/style=([^&]*)/, `style=${badgeStyle}`);
-          currentBadges.push({name, link});
+      for (const line of lines) {
+        if (line.startsWith('###')) {
+          if (currentSection) {
+            sections.push({section: currentSection, badges: currentBadges});
+            currentBadges = [];
+          }
+          currentSection = line.substring(4).trim();
+        } else if (
+          line.startsWith('|') &&
+          !line.startsWith('| ---') &&
+          !line.startsWith('| Name')
+        ) {
+          const columns = line.split('|').map((col: any) => col.trim());
+          if (columns && columns.length >= 4) {
+            const name = columns[1];
+            let link = columns[2].match(/\((.*?)\)/)?.[1];
+            link = link.replace(/style=([^&]*)/, `style=${badgeStyle}`);
+            currentBadges.push({name, link});
+          }
         }
       }
-    }
 
-    if (currentSection) {
-      sections.push({section: currentSection, badges: currentBadges});
-    }
+      if (currentSection) {
+        sections.push({section: currentSection, badges: currentBadges});
+      }
 
-    return sections;
-  }, []);
+      return sections;
+    },
+    [badgeStyle]
+  );
 
   const fetchMarkdown = useCallback(() => {
     const url =
