@@ -73,7 +73,7 @@ function App() {
         const badgesList = convertMarkdownToObjects(badgesContent);
         setList(badgesList);
       });
-  }, [convertMarkdownToObjects]);
+  }, []);
 
   useEffect(() => {
     fetchMarkdown();
