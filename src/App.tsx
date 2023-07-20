@@ -138,6 +138,7 @@ function App() {
                       <Form.Check
                         key={index}
                         type='checkbox'
+                        id={badge.name}
                         label={badge.name}
                         checked={badges[badge.name] || false}
                         onChange={(e) => handleCheckboxes(e, badge)}
@@ -157,6 +158,7 @@ function App() {
             {badgeStyles.map((style, index) => (
               <Form.Check
                 key={index}
+                id={style.value}
                 type='radio'
                 label={style.label}
                 checked={badgeStyle === style.value}
